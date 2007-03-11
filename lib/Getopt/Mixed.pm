@@ -3,24 +3,17 @@ package Getopt::Mixed;
 #
 # Copyright 1995 Christopher J. Madsen
 #
-# Author: Christopher J. Madsen <ac608@yfn.ysu.edu>
+# Author: Christopher J. Madsen <perl@cjmweb.net>
 # Created: 1 Jan 1995
-# Version: $Revision: 1.8 $ ($Date: 1996/02/09 00:05:00 $)
-#    Note that RCS revision 1.23 => $Getopt::Mixed::VERSION = "1.023"
+# $Id: Mixed.pm 1687 2007-03-11 01:38:53Z cjm $
 #
 # This program is free software; you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation; either version 2, or (at your option)
-# any later version.
+# it under the same terms as Perl itself.
 #
 # This program is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with Perl; see the file COPYING.  If not, write to the
-# Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See either the
+# GNU General Public License or the Artistic License for more details.
 #
 # Process both single-character and extended options
 #---------------------------------------------------------------------
@@ -38,6 +31,8 @@ require Exporter;
 
 BEGIN
 {
+    $VERSION = '1.09';
+
     # The permissible settings for $order:
     $REQUIRE_ORDER   = 0;
     $PERMUTE         = 1;
@@ -47,11 +42,6 @@ BEGIN
     $intRegexp   = '^[-+]?\d+$';               # Match an integer
     $floatRegexp = '^[-+]?(\d*\.?\d+|\d+\.)$'; # Match a real number
     $typeChars   = 'sif';                      # Match type characters
-
-    # Convert RCS revision number (must be main branch) to d.ddd format:
-    ' $Revision: 1.8 $ ' =~ / (\d+)\.(\d{1,3}) /
-        or die "Invalid version number";
-    $VERSION = sprintf("%d.%03d",$1,$2);
 } # end BEGIN
 
 #=====================================================================
@@ -375,7 +365,9 @@ sub getOptions
     while (($option, $value) = nextOption()) {
         $option =~ s/\W/_/g;    # Make a legal Perl identifier
         $value = 1 unless defined $value;
-        eval("\$" . $package . '::opt_' . $option . ' = $value;');
+        my $code = "\$" . $package . "::opt_$option = \$value;";
+        $code =~ /(.+)/;        # Untaint it
+        eval $1;
     } # end while
 
     cleanup();
@@ -409,12 +401,25 @@ or
 
 =head1 DESCRIPTION
 
-This package is my response to the standard modules Getopt::Std and
+This module is obsolete.
+
+This package was my response to the standard modules Getopt::Std and
 Getopt::Long.  C<Std> doesn't support long options, and C<Long>
-doesn't support short options.  I wanted both, since long options are
+didn't support short options.  I wanted both, since long options are
 easier to remember and short options are faster to type.
 
-This package is intended to be the "Getopt-to-end-all-Getop's".  It
+However, some time ago Getopt::Long was changed to support short
+options as well, and it has the huge advantage of being part of the
+standard Perl distribution.  So, Getopt::Mixed is now effectively
+obsolete.  I don't intend to make any more changes, but I'm leaving it
+available for people who have code that already uses it.  For new
+modules, I recommend using Getopt::Long like this:
+
+    use Getopt::Long;
+    Getopt::Long::Configure(qw(bundling no_getopt_compat));
+    GetOptions(...option-descriptions...);
+
+This package was intended to be the "Getopt-to-end-all-Getop's".  It
 combines (I hope) flexibility and simplicity.  It supports both short
 options (introduced by C<->) and long options (introduced by C<-->).
 Short options which do not take an argument can be grouped together.
@@ -728,24 +733,16 @@ and do it yourself.
 
 =head1 LICENSE
 
-Getopt::Mixed is distributed under the terms of the GNU General Public
-License as published by the Free Software Foundation; either version
-2, or (at your option) any later version.
+Getopt::Mixed is distributed under the same terms as Perl itself.
 
 This means it is distributed in the hope that it will be useful, but
 I<without any warranty>; without even the implied warranty of
 I<merchantability> or I<fitness for a particular purpose>.  See the
-GNU General Public License for more details.
-
-Since Perl scripts are only compiled at runtime, and simply calling
-Getopt::Mixed does I<not> bring your program under the GPL, the only
-real restriction is that you can't use Getopt::Mixed in an
-binary-only distribution produced with C<dump> (unless you also
-provide source code).
+GNU General Public License or the Artistic License for more details.
 
 =head1 AUTHOR
 
-Christopher J. Madsen E<lt>F<ac608@yfn.ysu.edu>E<gt>
+Christopher J. Madsen E<lt>F<perl@cjmweb.net>E<gt>
 
 Thanks are also due to Andreas Koenig for helping Getopt::Mixed
 conform to the standards for Perl modules and for answering a bunch of

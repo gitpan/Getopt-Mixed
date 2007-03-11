@@ -1,5 +1,5 @@
 #!perl
-# $Id: tstopt1 1.1 1996/02/08 23:02:48 Madsen Exp $
+# $Id: tstopt1 777 2005-01-15 21:45:24Z Madsen $
 
 BEGIN {unshift @INC, 'lib'} # So you don't have to install Getopt::Mixed first
 

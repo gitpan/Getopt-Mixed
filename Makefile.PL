@@ -1,21 +1,30 @@
-#!perl
+#! /usr/bin/perl
 #---------------------------------------------------------------------
-# $Id: Makefile.PL 1.3 1996/02/08 20:10:51 Madsen Exp $
-# Copyright 1996 Christopher J. Madsen
+# $Id: Makefile.PL 1688 2007-03-11 01:43:03Z cjm $
+# Copyright 2007 Christopher J. Madsen
 #
 # Makefile.PL for Getopt::Mixed
 #---------------------------------------------------------------------
 
 use ExtUtils::MakeMaker;
-require './lib/Getopt/Mixed.pm'; # To get the current version number
+
+my @PREOP;
+
+my $fixup = ($^O =~ /Win32/ ? 'cjm_fixup.bat' : './cjm_fixup.sh');
+
+if (-e $fixup) {
+  @PREOP = (PREOP => "$fixup \$(DISTVNAME)");
+}
 
 WriteMakefile(
-    NAME     => 'Getopt::Mixed',
-    DISTNAME => 'Getopt-Mixed',
-    linkext  => {LINKTYPE => ''}, # not needed for MakeMakers gt '5.00'
-    VERSION  => $Getopt::Mixed::VERSION,
+    NAME                => 'Getopt::Mixed',
+    AUTHOR              => 'Christopher J. Madsen <perl@cjmweb.net>',
+    VERSION_FROM        => 'lib/Getopt/Mixed.pm',
+    ABSTRACT_FROM       => 'lib/Getopt/Mixed.pm',
+    PL_FILES            => {},
+    PREREQ_PM => {
+        'Test::More' => 0,
+    },
     dist     => {COMPRESS => 'gzip -9f', SUFFIX => 'gz',
-# This next line is just for my own use, you can comment it out if you want:
-                PREOP => 'toix $(DISTVNAME)' # Converts CRLF to LF
-                },
+                 @PREOP },
 );
