@@ -1,6 +1,6 @@
 #! /usr/bin/perl
 #---------------------------------------------------------------------
-# $Id: Makefile.PL 1688 2007-03-11 01:43:03Z cjm $
+# $Id: Makefile.PL 1712 2007-03-22 00:13:26Z cjm $
 # Copyright 2007 Christopher J. Madsen
 #
 # Makefile.PL for Getopt::Mixed
@@ -21,6 +21,7 @@ WriteMakefile(
     AUTHOR              => 'Christopher J. Madsen <perl@cjmweb.net>',
     VERSION_FROM        => 'lib/Getopt/Mixed.pm',
     ABSTRACT_FROM       => 'lib/Getopt/Mixed.pm',
+    LICENSE             => 'perl',
     PL_FILES            => {},
     PREREQ_PM => {
         'Test::More' => 0,
