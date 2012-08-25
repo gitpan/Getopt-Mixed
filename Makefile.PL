@@ -1,31 +1,54 @@
-#! /usr/bin/perl
-#---------------------------------------------------------------------
-# $Id: Makefile.PL 1712 2007-03-22 00:13:26Z cjm $
-# Copyright 2007 Christopher J. Madsen
-#
-# Makefile.PL for Getopt::Mixed
-#---------------------------------------------------------------------
 
-use ExtUtils::MakeMaker;
+use strict;
+use warnings;
 
-my @PREOP;
+use 5.000;
 
-my $fixup = ($^O =~ /Win32/ ? 'cjm_fixup.bat' : './cjm_fixup.sh');
+use ExtUtils::MakeMaker 6.30;
 
-if (-e $fixup) {
-  @PREOP = (PREOP => "$fixup \$(DISTVNAME)");
+
+
+my %WriteMakefileArgs = (
+  "ABSTRACT" => "getopt processing with both long and short options",
+  "AUTHOR" => "Christopher J. Madsen <perl\@cjmweb.net>",
+  "BUILD_REQUIRES" => {
+    "Test::More" => 0
+  },
+  "CONFIGURE_REQUIRES" => {
+    "ExtUtils::MakeMaker" => "6.30"
+  },
+  "DISTNAME" => "Getopt-Mixed",
+  "EXE_FILES" => [],
+  "LICENSE" => "perl",
+  "NAME" => "Getopt::Mixed",
+  "PREREQ_PM" => {
+    "Carp" => 0,
+    "Exporter" => 0
+  },
+  "VERSION" => "1.11",
+  "test" => {
+    "TESTS" => "t/*.t"
+  }
+);
+
+
+unless ( eval { ExtUtils::MakeMaker->VERSION(6.56) } ) {
+  my $br = delete $WriteMakefileArgs{BUILD_REQUIRES};
+  my $pp = $WriteMakefileArgs{PREREQ_PM};
+  for my $mod ( keys %$br ) {
+    if ( exists $pp->{$mod} ) {
+      $pp->{$mod} = $br->{$mod} if $br->{$mod} > $pp->{$mod};
+    }
+    else {
+      $pp->{$mod} = $br->{$mod};
+    }
+  }
 }
 
-WriteMakefile(
-    NAME                => 'Getopt::Mixed',
-    AUTHOR              => 'Christopher J. Madsen <perl@cjmweb.net>',
-    VERSION_FROM        => 'lib/Getopt/Mixed.pm',
-    ABSTRACT_FROM       => 'lib/Getopt/Mixed.pm',
-    LICENSE             => 'perl',
-    PL_FILES            => {},
-    PREREQ_PM => {
-        'Test::More' => 0,
-    },
-    dist     => {COMPRESS => 'gzip -9f', SUFFIX => 'gz',
-                 @PREOP },
-);
+delete $WriteMakefileArgs{CONFIGURE_REQUIRES}
+  unless eval { ExtUtils::MakeMaker->VERSION(6.52) };
+
+WriteMakefile(%WriteMakefileArgs);
+
+
+

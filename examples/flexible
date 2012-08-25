@@ -1,6 +1,6 @@
 #! /usr/bin/perl
 #---------------------------------------------------------------------
-# $Id: flexible 1712 2007-03-22 00:13:26Z cjm $
+# examples/flexible
 #
 # Demonstrate the flexible method of using Getopt::Mixed
 #---------------------------------------------------------------------

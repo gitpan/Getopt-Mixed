@@ -1,6 +1,6 @@
 #! /usr/bin/perl
 #---------------------------------------------------------------------
-# $Id: 10.getopt.t 1673 2007-03-05 05:27:04Z cjm $
+# 10-getopt.t
 # Copyright 2002 Christopher J. Madsen
 #
 # This program is free software; you can redistribute it and/or modify
