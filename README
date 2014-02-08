@@ -1,4 +1,4 @@
-Getopt::Mixed version 1.11, released August 25, 2012
+Getopt::Mixed version 1.12, released February 8, 2014
 
 
 This module is obsolete.
@@ -62,13 +62,11 @@ DEPENDENCIES
 
 
 CHANGES
-    Here's what's new in version 1.11 of Getopt-Mixed:
+    Here's what's new in version 1.12 of Getopt-Mixed:
     (See the file "Changes" for the full revision history.)
 
 	- No functional changes
-	- Minor documentation improvements
-	- Now built with Dist::Zilla (includes v2 META.json)
-	- Repository now publicly available on GitHub
+	- Minor documentation & metadata improvements
 
 
 
